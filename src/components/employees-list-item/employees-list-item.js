@@ -1,60 +1,68 @@
-import './employees-list-item.css';
-import {Component} from 'react';
+import { Component } from "react";
+import "./employees-list-item.css";
 
 class EmployeesListItem extends Component {
-
-    constructor (props) {
-        super (props);
+    constructor(props) {
+        super(props);
         this.state = {
-            increase: false,
-            like: false
+            salary: this.props.salary,
         };
     }
 
-    onIncrease = () => {
-        this.setState(({increase}) => ({
-            increase: !increase
-        }))
-    }
-
-    onLike = () => {
-        this.setState(({like}) => ({
-            like: !like
-        }))
-    }
+    onChangeSalary = (e) => {
+        const value = e.target.value.replace(/\D/g, "");
+        this.setState({ salary: value });
+        this.props.onChangeSalary(value);
+    };
 
     render() {
-        const {name, salary, onDelete} = this.props;
-        const {increase, like} = this.state;
+        const { name, onDelete, onToggleProp, increase, rise } = this.props;
 
         let classNames = "list-group-item d-flex justify-content-between";
         if (increase) {
-            classNames += ' increase'
+            classNames += " increase";
         }
-        if (like) {
-            classNames += ' like'
+        if (rise) {
+            classNames += " like";
         }
 
         return (
             <li className={classNames}>
-                <span className="list-group-item-label" onClick={this.onLike} >{name}</span>
-                <input type="text" className="list-group-item-input" defaultValue={salary+"$"}/>
-                <div className='d-flex justify-content-center align-items-center'>
-                    <button type="button"
+                <span
+                    className="list-group-item-label"
+                    onClick={onToggleProp}
+                    data-toggle="rise"
+                    style={{fontSize: 28, color: '#3d5a80'}}
+                >
+                    {name}
+                </span>
+                <input
+                    type="text"
+                    className="list-group-item-input"
+                    value={`${this.state.salary} $`}
+                    onChange={this.onChangeSalary}
+                />
+                <div className="d-flex justify-content-center align-items-center">
+                    <button
+                        type="button"
                         className="btn-cookie btn-sm "
-                        onClick={this.onIncrease} >
+                        onClick={onToggleProp}
+                        data-toggle="increase"
+                    >
                         <i className="fas fa-cookie"></i>
                     </button>
 
-                    <button type="button"
-                            className="btn-trash btn-sm "
-                            onClick={onDelete}>
+                    <button
+                        type="button"
+                        className="btn-trash btn-sm "
+                        onClick={onDelete}
+                    >
                         <i className="fas fa-trash"></i>
                     </button>
                     <i className="fas fa-star"></i>
                 </div>
             </li>
-        )
+        );
     }
 }
 

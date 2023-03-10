@@ -1,4 +1,4 @@
-import './employees-add-form.css';
+import './employees-add-form.scss';
 import {Component} from 'react';
 
 class EmployeesAddForm extends Component {
@@ -19,11 +19,14 @@ class EmployeesAddForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.addItem({ name: this.state.name, salary: this.state.salary });
-        this.setState({
-            name: '',
-            salary: ''
-        });
+        const inputName = this.state.name.trim(), inputSalary = this.state.salary.trim();
+        if (inputName.length !== 0 && inputSalary.length !== 0) {            
+            this.props.addItem({ name: inputName, salary: inputSalary });
+            this.setState({
+                name: '',
+                salary: ''
+            });
+        }
     }
 
     render() {
